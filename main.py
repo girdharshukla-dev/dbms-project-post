@@ -12,7 +12,7 @@ db = mysql.connector.connect(
 )
 cursor = db.cursor(dictionary=True)
 
-# ========================= CUSTOMERS =========================
+# == CUSTOMERS ==
 @app.route("/customers")
 def list_customers():
     cursor.execute("SELECT * FROM Customers")
@@ -51,7 +51,7 @@ def update_customer():
     return redirect(url_for("list_customers"))
 
 
-# ========================= PARCELS =========================
+# == PARCELS ==
 @app.route("/parcels")
 def list_parcels():
     query = """
@@ -97,7 +97,7 @@ def update_parcel():
     return redirect(url_for("list_parcels"))
 
 
-# ========================= DELIVERIES =========================
+# == DELIVERIES ==
 @app.route("/deliveries")
 def list_deliveries():
     query = """
@@ -141,7 +141,7 @@ def update_delivery():
     return redirect(url_for("list_deliveries"))
 
 
-# ========================= OFFICES =========================
+# == OFFICES ==
 @app.route("/offices")
 def list_offices():
     cursor.execute("SELECT * FROM Offices")
@@ -178,7 +178,7 @@ def update_office():
     return redirect(url_for("list_offices"))
 
 
-# ========================= ROOT =========================
+# == ROOT ==
 @app.route("/")
 def home():
     return """
