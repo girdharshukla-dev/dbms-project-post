@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Offices</title>
+    <style>
+        body {max-width:900px;margin:40px auto;padding:20px;background:#f7f7f7;font-family:sans-serif;}
+        table {width:100%;border-collapse:collapse;background:white;}
+        th,td {padding:8px;border:1px solid #ccc;}
+        .edit-modal {display:none;justify-content:center;align-items:center;position:fixed;inset:0;background:rgba(0,0,0,0.3);}
+        #modal-content {background:white;padding:20px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+    </style>
+</head>
+<body>
+<h1>Offices</h1>
+<nav>
+    <a href="/">Home</a> |
+    <a href="/customers">Customers</a> |
+    <a href="/parcels">Parcels</a> |
+    <a href="/deliveries">Deliveries</a>
+</nav>
+<hr>
+
+<table>
+    <tr><th>ID</th><th>Name</th><th>Location</th><th>Actions</th></tr>
+    {% for o in offices %}
+    <tr>
+        <td>{{ o.office_id }}</td>
+        <td>{{ o.office_name }}</td>
+        <td>{{ o.location }}</td>
+        <td>
+            <a href="{{ url_for('delete_office', office_id=o.office_id) }}">Delete</a>
+            <button class="edit-btn" data-id="{{ o.office_id }}" data-name="{{ o.office_name }}" data-location="{{ o.location }}">Edit</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Add Office</h2>
+<form method="POST" action="{{ url_for('add_office') }}">
+    <input name="office_name" placeholder="Name" required>
+    <input name="location" placeholder="Location">
+    <button type="submit">Add</button>
+</form>
+
+<div class="edit-modal">
+    <div id="modal-content">
+        <div style="display:flex;justify-content:space-between;">
+            <strong>Edit Office</strong><button id="close-btn">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('update_office') }}">
+            <input type="hidden" name="office_id" id="modal-id">
+            <input name="office_name" placeholder="Name" required><br>
+            <input name="location" placeholder="Location"><br>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>
+
+<script>
+const modal=document.querySelector(".edit-modal");
+document.addEventListener("click",e=>{
+    if(e.target.classList.contains("edit-btn")){
+        modal.style.display="flex";
+        const b=e.target;
+        document.getElementById("modal-id").value=b.dataset.id;
+        document.querySelector("#modal-content input[name='office_name']").value=b.dataset.name;
+        document.querySelector("#modal-content input[name='location']").value=b.dataset.location;
+    }
+});
+document.getElementById("close-btn").onclick=()=>modal.style.display="none";
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Deliveries</title>
+    <style>
+        body { max-width:900px;margin:40px auto;padding:20px;background:#f7f7f7;font-family:sans-serif;}
+        table {width:100%;border-collapse:collapse;background:white;}
+        th,td {padding:8px;border:1px solid #ccc;}
+        .edit-modal {display:none;justify-content:center;align-items:center;position:fixed;inset:0;background:rgba(0,0,0,0.3);}
+        #modal-content {background:white;padding:20px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+    </style>
+</head>
+<body>
+<h1>Deliveries</h1>
+<nav>
+    <a href="/">Home</a> |
+    <a href="/customers">Customers</a> |
+    <a href="/parcels">Parcels</a> |
+    <a href="/offices">Offices</a>
+</nav>
+<hr>
+
+<table>
+    <tr><th>ID</th><th>Parcel ID</th><th>Receiver</th><th>Destination</th><th>Date</th><th>Status</th><th>Actions</th></tr>
+    {% for d in deliveries %}
+    <tr>
+        <td>{{ d.delivery_id }}</td>
+        <td>{{ d.parcel_id }}</td>
+        <td>{{ d.receiver_name }}</td>
+        <td>{{ d.destination }}</td>
+        <td>{{ d.delivery_date }}</td>
+        <td>{{ d.status }}</td>
+        <td>
+            <a href="{{ url_for('delete_delivery', delivery_id=d.delivery_id) }}">Delete</a>
+            <button class="edit-btn" data-id="{{ d.delivery_id }}" data-parcel="{{ d.parcel_id }}" data-date="{{ d.delivery_date }}" data-status="{{ d.status }}">Edit</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Add Delivery</h2>
+<form method="POST" action="{{ url_for('add_delivery') }}">
+    <input name="parcel_id" placeholder="Parcel ID" required>
+    <input type="date" name="delivery_date" required>
+    <input name="status" placeholder="Status">
+    <button type="submit">Add</button>
+</form>
+
+<div class="edit-modal">
+    <div id="modal-content">
+        <div style="display:flex;justify-content:space-between;">
+            <strong>Edit Delivery</strong><button id="close-btn">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('update_delivery') }}">
+            <input type="hidden" name="delivery_id" id="modal-id">
+            <input name="parcel_id" placeholder="Parcel ID" required><br>
+            <input type="date" name="delivery_date" required><br>
+            <input name="status" placeholder="Status"><br>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>
+
+<script>
+const modal=document.querySelector(".edit-modal");
+document.addEventListener("click",e=>{
+    if(e.target.classList.contains("edit-btn")){
+        modal.style.display="flex";
+        const b=e.target;
+        document.getElementById("modal-id").value=b.dataset.id;
+        document.querySelector("#modal-content input[name='parcel_id']").value=b.dataset.parcel;
+        document.querySelector("#modal-content input[name='delivery_date']").value=b.dataset.date;
+        document.querySelector("#modal-content input[name='status']").value=b.dataset.status;
+    }
+});
+document.getElementById("close-btn").onclick=()=>modal.style.display="none";
+</script>
+</body>
+</html>

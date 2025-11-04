@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <style>
+        body { max-width: 900px; margin: 40px auto; padding: 20px; background: #f7f7f7; font-family: sans-serif; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 8px; border: 1px solid #ccc; text-align: left; }
+        .edit-modal { display: none; justify-content: center; align-items: center; position: fixed; inset: 0; background: rgba(0,0,0,0.3); }
+        #modal-content { background: white; padding: 20px; border-radius: 10px; min-width: 320px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <h1>Customers</h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/parcels">Parcels</a> |
+        <a href="/deliveries">Deliveries</a> |
+        <a href="/offices">Offices</a>
+    </nav>
+    <hr>
+
+    <table>
+        <tr><th>ID</th><th>Name</th><th>Address</th><th>Phone</th><th>Actions</th></tr>
+        {% for c in customers %}
+        <tr>
+            <td>{{ c.customer_id }}</td>
+            <td>{{ c.customer_name }}</td>
+            <td>{{ c.address }}</td>
+            <td>{{ c.phone }}</td>
+            <td>
+                <a href="{{ url_for('delete_customer', customer_id=c.customer_id) }}">Delete</a>
+                <button class="edit-btn" 
+                    data-id="{{ c.customer_id }}" 
+                    data-name="{{ c.customer_name }}" 
+                    data-address="{{ c.address }}" 
+                    data-phone="{{ c.phone }}">Edit</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Add Customer</h2>
+    <form method="POST" action="{{ url_for('add_customer') }}">
+        <input name="customer_name" placeholder="Name" required>
+        <input name="address" placeholder="Address">
+        <input name="phone" placeholder="Phone">
+        <button type="submit">Add</button>
+    </form>
+
+    <div class="edit-modal">
+        <div id="modal-content">
+            <div style="display:flex;justify-content:space-between;">
+                <strong>Edit Customer</strong><button id="close-btn">&times;</button>
+            </div>
+            <form method="POST" action="{{ url_for('update_customer') }}">
+                <input type="hidden" name="customer_id" id="modal-id">
+                <input name="customer_name" placeholder="Name" required><br>
+                <input name="address" placeholder="Address"><br>
+                <input name="phone" placeholder="Phone"><br>
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+
+<script>
+const modal = document.querySelector(".edit-modal");
+document.addEventListener("click", e=>{
+    if(e.target.classList.contains("edit-btn")){
+        modal.style.display="flex";
+        const b=e.target;
+        document.getElementById("modal-id").value=b.dataset.id;
+        document.querySelector("#modal-content input[name='customer_name']").value=b.dataset.name;
+        document.querySelector("#modal-content input[name='address']").value=b.dataset.address;
+        document.querySelector("#modal-content input[name='phone']").value=b.dataset.phone;
+    }
+});
+document.getElementById("close-btn").onclick=()=>modal.style.display="none";
+</script>
+</body>
+</html>
