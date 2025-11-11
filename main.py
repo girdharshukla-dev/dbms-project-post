@@ -181,15 +181,7 @@ def update_office():
 # == ROOT ==
 @app.route("/")
 def home():
-    return """
-    <h1>Parcel Management System</h1>
-    <ul>
-        <li><a href='/customers'>Customers</a></li>
-        <li><a href='/parcels'>Parcels</a></li>
-        <li><a href='/deliveries'>Deliveries</a></li>
-        <li><a href='/offices'>Offices</a></li>
-    </ul>
-    """
+    return render_template("home.html")
 
 
 if __name__ == "__main__":

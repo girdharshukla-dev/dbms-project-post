@@ -1,80 +1,293 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Deliveries</title>
     <style>
-        body { max-width:900px;margin:40px auto;padding:20px;background:#f7f7f7;font-family:sans-serif;}
-        table {width:100%;border-collapse:collapse;background:white;}
-        th,td {padding:8px;border:1px solid #ccc;}
-        .edit-modal {display:none;justify-content:center;align-items:center;position:fixed;inset:0;background:rgba(0,0,0,0.3);}
-        #modal-content {background:white;padding:20px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+        body {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f2f5, #e4ebf0);
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #0077cc;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            background: #0077cc;
+            color: white;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #ccc;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        th {
+            background: #0077cc;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f0f8ff;
+        }
+
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            background: #0077cc;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #005fa3;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-top: 20px;
+        }
+
+        input {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #0077cc;
+            outline: none;
+        }
+
+        form button {
+            width: 100%;
+            font-weight: 600;
+            padding: 10px;
+        }
+
+        .edit-modal {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(3px);
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        #modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            min-width: 320px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            animation: scaleIn 0.2s ease-in-out;
+        }
+
+        #modal-content strong {
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        #close-btn {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        #close-btn:hover {
+            color: #333;
+        }
+
+        .credits-box {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            color: #333;
+            line-height: 1.4;
+            text-align: right;
+            opacity: 0.9;
+        }
+
+        .credits-box strong {
+            color: #0077cc;
+        }
+
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
+
 <body>
-<h1>Deliveries</h1>
-<nav>
-    <a href="/">Home</a> |
-    <a href="/customers">Customers</a> |
-    <a href="/parcels">Parcels</a> |
-    <a href="/offices">Offices</a>
-</nav>
-<hr>
+    <h1>Deliveries</h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/customers">Customers</a> |
+        <a href="/parcels">Parcels</a> |
+        <a href="/offices">Offices</a>
+    </nav>
+    <hr>
 
-<table>
-    <tr><th>ID</th><th>Parcel ID</th><th>Receiver</th><th>Destination</th><th>Date</th><th>Status</th><th>Actions</th></tr>
-    {% for d in deliveries %}
-    <tr>
-        <td>{{ d.delivery_id }}</td>
-        <td>{{ d.parcel_id }}</td>
-        <td>{{ d.receiver_name }}</td>
-        <td>{{ d.destination }}</td>
-        <td>{{ d.delivery_date }}</td>
-        <td>{{ d.status }}</td>
-        <td>
-            <a href="{{ url_for('delete_delivery', delivery_id=d.delivery_id) }}">Delete</a>
-            <button class="edit-btn" data-id="{{ d.delivery_id }}" data-parcel="{{ d.parcel_id }}" data-date="{{ d.delivery_date }}" data-status="{{ d.status }}">Edit</button>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-
-<h2>Add Delivery</h2>
-<form method="POST" action="{{ url_for('add_delivery') }}">
-    <input name="parcel_id" placeholder="Parcel ID" required>
-    <input type="date" name="delivery_date" required>
-    <input name="status" placeholder="Status">
-    <button type="submit">Add</button>
-</form>
-
-<div class="edit-modal">
-    <div id="modal-content">
-        <div style="display:flex;justify-content:space-between;">
-            <strong>Edit Delivery</strong><button id="close-btn">&times;</button>
-        </div>
-        <form method="POST" action="{{ url_for('update_delivery') }}">
-            <input type="hidden" name="delivery_id" id="modal-id">
-            <input name="parcel_id" placeholder="Parcel ID" required><br>
-            <input type="date" name="delivery_date" required><br>
-            <input name="status" placeholder="Status"><br>
-            <button type="submit">Update</button>
-        </form>
+    <div class="credits-box">
+        <p><strong>Girdhar Shukla</strong> - 24U023007<br><em>CSE (CS)</em></p>
+        <p><strong>Rhit Shula</strong> - 24U023002<br><em>CSE (CS)</em></p>
     </div>
-</div>
 
-<script>
-const modal=document.querySelector(".edit-modal");
-document.addEventListener("click",e=>{
-    if(e.target.classList.contains("edit-btn")){
-        modal.style.display="flex";
-        const b=e.target;
-        document.getElementById("modal-id").value=b.dataset.id;
-        document.querySelector("#modal-content input[name='parcel_id']").value=b.dataset.parcel;
-        document.querySelector("#modal-content input[name='delivery_date']").value=b.dataset.date;
-        document.querySelector("#modal-content input[name='status']").value=b.dataset.status;
-    }
-});
-document.getElementById("close-btn").onclick=()=>modal.style.display="none";
-</script>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Parcel ID</th>
+            <th>Receiver</th>
+            <th>Destination</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for d in deliveries %}
+        <tr>
+            <td>{{ d.delivery_id }}</td>
+            <td>{{ d.parcel_id }}</td>
+            <td>{{ d.receiver_name }}</td>
+            <td>{{ d.destination }}</td>
+            <td>{{ d.delivery_date }}</td>
+            <td>{{ d.status }}</td>
+            <td>
+                <a href="{{ url_for('delete_delivery', delivery_id=d.delivery_id) }}"
+                    style="margin-right: 40px;">Delete</a>
+                <button class="edit-btn" data-id="{{ d.delivery_id }}" data-parcel="{{ d.parcel_id }}"
+                    data-date="{{ d.delivery_date }}" data-status="{{ d.status }}">Edit</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Add Delivery</h2>
+    <form method="POST" action="{{ url_for('add_delivery') }}">
+        <input name="parcel_id" placeholder="Parcel ID" required>
+        <input type="date" name="delivery_date" required>
+        <input name="status" placeholder="Status">
+        <button type="submit">Add</button>
+    </form>
+
+    <div class="edit-modal">
+        <div id="modal-content">
+            <div style="display:flex;justify-content:space-between;">
+                <strong>Edit Delivery</strong><button id="close-btn">&times;</button>
+            </div>
+            <form method="POST" action="{{ url_for('update_delivery') }}">
+                <input type="hidden" name="delivery_id" id="modal-id">
+                <input name="parcel_id" placeholder="Parcel ID" required><br>
+                <input type="date" name="delivery_date" required><br>
+                <input name="status" placeholder="Status"><br>
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.querySelector(".edit-modal");
+        document.addEventListener("click", e => {
+            if (e.target.classList.contains("edit-btn")) {
+                modal.style.display = "flex";
+                const b = e.target;
+                document.getElementById("modal-id").value = b.dataset.id;
+                document.querySelector("#modal-content input[name='parcel_id']").value = b.dataset.parcel;
+                document.querySelector("#modal-content input[name='delivery_date']").value = b.dataset.date;
+                document.querySelector("#modal-content input[name='status']").value = b.dataset.status;
+            }
+        });
+        document.getElementById("close-btn").onclick = () => modal.style.display = "none";
+    </script>
 </body>
+
 </html>
