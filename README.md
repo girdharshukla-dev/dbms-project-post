@@ -4,13 +4,11 @@
 
 - Make a .env file with the contents of .env.sample
 - Put the required values
-- Make a database with name college
 
 ### Run this command to load the table schemas on your machine
 ```
 mysql -u root -p college < ./create.sql
 ```
-
 
 #### If you are on linux run these commands 
 ```
