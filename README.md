@@ -1,5 +1,7 @@
 ### Run these commands
 
+`Clear any __pycache__ folder if it ends up on your machine`
+
 - Make a .env file with the contents of .env.sample
 - Put the required values
 - Make a database with name college
