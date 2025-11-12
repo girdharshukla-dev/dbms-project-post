@@ -2,6 +2,7 @@
 
 `Clear any __pycache__ folder if it ends up on your machine`
 
+- If you see a .env file put the required credentials there, if for some reasons, .env is not there, go to the next step  else skip it 
 - Make a .env file with the contents of .env.sample
 - Put the required values
 
